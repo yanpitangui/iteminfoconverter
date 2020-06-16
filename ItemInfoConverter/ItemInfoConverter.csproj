@@ -14,12 +14,9 @@
       <NoWarn>true</NoWarn>
     </PackageReference>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Update="luaFunction.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Resources\luaFunction.lua" />
   </ItemGroup>
-
 
 </Project>

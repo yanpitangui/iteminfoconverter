@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -184,13 +185,20 @@ namespace ItemInfoConverter
                 ))
             {
                 await Writer.WriteAsync($"tbl = {{{Environment.NewLine}");
-
-                foreach (var item in items.OrderBy(x => x.Id))
+                int maxlen = items.Any() ? items.Max(x => x.Id.Length) : 0;
+                foreach (var item in items.OrderBy(x => x.Id.PadLeft(maxlen, '0')))
                 {
                     await Writer.WriteAsync($"{item}{Environment.NewLine}");
                 }
                 await Writer.WriteAsync($"}}{Environment.NewLine}{Environment.NewLine}");
-                await Writer.WriteAsync(await File.ReadAllTextAsync("luaFunction.txt"));
+
+                var resourceName = "ItemInfoConverter.Resources.luaFunction.lua";
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    await Writer.WriteAsync(await reader.ReadToEndAsync());
+                    reader.Close();
+                }
                 Writer.Close();
             }
         }
