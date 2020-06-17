@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace ItemInfoConverter
@@ -37,6 +36,9 @@ namespace ItemInfoConverter
                         running = true;
                         pbStatus.Visibility = Visibility.Visible;
                         var converter = new Converter(dialog.FileName);
+                        txtStatus.Text = "item_db.conf...";
+                        await converter.ReadItemDbConf();
+                        pbStatus.Value += 12.5;
                         txtStatus.Text = "idnum2itemdesctable.txt...";
                         await converter.ReadIdentifiedDescriptionFile();
                         pbStatus.Value += 12.5;
@@ -57,9 +59,6 @@ namespace ItemInfoConverter
                         pbStatus.Value += 12.5;
                         txtStatus.Text = "itemslotcounttable.txt...";
                         await converter.ReadSlotCountFile();
-                        pbStatus.Value += 12.5;
-                        txtStatus.Text = "item_db.conf...";
-                        await converter.ReadItemDbConf();
                         pbStatus.Value += 10;
                         txtStatus.Text = "Gerando iteminfo.lua...";
                         await converter.GenerateItemInfo();
