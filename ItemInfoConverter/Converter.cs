@@ -164,7 +164,7 @@ namespace ItemInfoConverter
 
             using (StreamWriter Writer = new StreamWriter(
                 new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite),
-                Encoding.GetEncoding(949)
+                Encoding.UTF8
                 ))
             {
                 await Writer.WriteAsync($"tbl = {{{Environment.NewLine}");
